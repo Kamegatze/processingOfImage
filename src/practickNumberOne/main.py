@@ -1,6 +1,6 @@
-from PIL import Image
-from matplotlib import image
+from skimage.io import imread, imsave, imshow
 import numpy
+from math import floor
 
 def lineСontrastingImage(image : numpy, g_max, g_min) : 
   max_value = image.max()
@@ -12,15 +12,14 @@ def lineСontrastingImage(image : numpy, g_max, g_min) :
   
   b = g_min - a*min_value
 
-  g = lambda a, b, f: a*f + b
+  g = lambda a, b, f: a * f + b
   
   for i in range(len(image)):
-    for j in range(len(image[i])):
-      image_return[i][j] = list(
-        map(
-          lambda item: g(a, b, item) / 255, image[i][j]
-        )
+    image_return[i] = list(
+      map(
+        lambda item: numpy.uint8(floor(g(a, b, item))), image[i]
       )
+    )
     
   return numpy.array(image_return)
 
@@ -35,21 +34,22 @@ def dissection(image : numpy) :
   g_min = 255 - max_value
   
   for i in range(len(image)):
-    for j in range(len(image[i])):
-      image_return[i][j] = list(
-        map(
-          lambda item : item / 255 if item != min_value else g_min /255, image[i][j]
-        )
+    image_return[i] = list(
+      map(
+        lambda item : numpy.uint8(item) if item != min_value else numpy.uint8(g_min), image[i]
       )
+    )
   
-  return image_return
+  return numpy.array(image_return)
 
-images = image.imread('./src/practickNumberOne/images.jpg')
 
-images = lineСontrastingImage(images, images.max(), 30)
 
-# image.imsave('./src/practickNumberOne/images-other.jpg', images)
+images = imread("./src/practickNumberOne/lena.jpg")
 
-# images = dissection(images)
+# images = lineСontrastingImage(images, images.max() - 50, 30)
 
-image.imsave('./src/practickNumberOne/images-other.jpg', images)
+# imsave('./src/practickNumberOne/images-other.jpg', images)
+
+images = dissection(images)
+
+imsave('./src/practickNumberOne/images-other.jpg', images)
