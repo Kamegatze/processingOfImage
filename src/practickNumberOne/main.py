@@ -1,4 +1,4 @@
-from skimage.io import imread, imsave, imshow
+from skimage.io import imread, imsave
 import numpy
 from math import floor
 
