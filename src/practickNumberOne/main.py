@@ -1,6 +1,7 @@
 from skimage.io import imread, imsave
 import numpy
 from math import floor
+import matplotlib.pyplot as plt
 
 def lineСontrastingImage(image : numpy, g_max, g_min) : 
   max_value = image.max()
@@ -10,7 +11,7 @@ def lineСontrastingImage(image : numpy, g_max, g_min) :
   
   a = (g_max - g_min)/(max_value - min_value)
   
-  b = g_min - a*min_value
+  b = g_min - a * min_value
 
   g = lambda a, b, f: a * f + b
   
@@ -25,31 +26,49 @@ def lineСontrastingImage(image : numpy, g_max, g_min) :
 
 
 def dissection(image : numpy) : 
+  
+  def subDissection(pixel : int, g_min : int) :
+    value = pixel + g_min if pixel + g_min < 256 else 255 
+    return numpy.uint8(value) 
+    
   image_return = numpy.array(image).tolist().copy()
   
   max_value = image.max()
-  
-  min_value = image.min()
   
   g_min = 255 - max_value
   
   for i in range(len(image)):
     image_return[i] = list(
       map(
-        lambda item : numpy.uint8(item) if item != min_value else numpy.uint8(g_min), image[i]
+        lambda item : subDissection(item, g_min), image[i]
       )
     )
   
   return numpy.array(image_return)
 
+def equalization(images: numpy.ndarray, hist: numpy.ndarray) : 
+  
+  cdf = hist.cumsum()
 
+  cdf = (cdf-cdf[0]) *255/ (cdf[-1]-1)
+  cdf = cdf.astype(numpy.uint8)
+
+  return cdf[images]
 
 images = imread("./src/practickNumberOne/lena.jpg")
 
-# images = lineСontrastingImage(images, images.max() - 50, 30)
+# images_other = lineСontrastingImage(images, images.max(), 60)
 
-# imsave('./src/practickNumberOne/images-other.jpg', images)
+images_other = dissection(images)
 
-images = dissection(images)
+plt.hist(images.ravel(), 255)
 
-imsave('./src/practickNumberOne/images-other.jpg', images)
+hist, bins = numpy.histogram(images.flatten(), 255, [0, 255])
+
+images_other = equalization(images, hist)
+
+plt.hist(images_other.ravel(), 255)
+
+plt.show()
+
+imsave('./src/practickNumberOne/images-other.jpg', images_other)
