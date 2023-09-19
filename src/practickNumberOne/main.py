@@ -46,6 +46,7 @@ def dissection(image : numpy) :
   
   return numpy.array(image_return)
 
+
 def equalization(images: numpy.ndarray, hist: numpy.ndarray) : 
   
   cdf = hist.cumsum()
@@ -59,15 +60,21 @@ images = imread("./src/practickNumberOne/lena.jpg")
 
 # images_other = lineСontrastingImage(images, images.max(), 60)
 
-images_other = dissection(images)
-
-plt.hist(images.ravel(), 255)
+# images_other = dissection(images)
 
 hist, bins = numpy.histogram(images.flatten(), 255, [0, 255])
 
 images_other = equalization(images, hist)
 
-plt.hist(images_other.ravel(), 255)
+plt.hist(images.ravel(), 255, label="До обработки изображения")
+
+plt.hist(images_other.ravel(), 255, label="После обработки изображения")
+
+plt.xlabel("Градиент яркости пиксиля")
+
+plt.ylabel("Кол-во пикселей")
+
+plt.legend()
 
 plt.show()
 
