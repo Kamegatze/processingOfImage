@@ -58,13 +58,15 @@ def equalization(images: numpy.ndarray, hist: numpy.ndarray) :
 
 images = imread("./src/practickNumberOne/lena.jpg")
 
-# images_other = lineСontrastingImage(images, images.max(), 60)
+images_other = lineСontrastingImage(images, 255,  0)
 
 # images_other = dissection(images)
 
 hist, bins = numpy.histogram(images.flatten(), 255, [0, 255])
 
-images_other = equalization(images, hist)
+# images_other = equalization(images, hist)
+
+imsave('./src/practickNumberOne/images-other.jpg', images_other)
 
 plt.hist(images.ravel(), 255, label="До обработки изображения")
 
@@ -77,5 +79,3 @@ plt.ylabel("Кол-во пикселей")
 plt.legend()
 
 plt.show()
-
-imsave('./src/practickNumberOne/images-other.jpg', images_other)
