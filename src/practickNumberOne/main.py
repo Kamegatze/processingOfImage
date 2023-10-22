@@ -15,12 +15,15 @@ def lineСontrastingImage(image : numpy, g_max, g_min) :
 
   g = lambda a, b, f: a * f + b
   
-  for i in range(len(image)):
-    image_return[i] = list(
-      map(
-        lambda item: numpy.uint8(floor(g(a, b, item))), image[i]
-      )
+  image_return = list(
+    map(
+      lambda row : list(
+        map(
+          lambda item: numpy.uint8(floor(g(a, b, item))), row
+        )
+      ), image_return
     )
+  )
     
   return numpy.array(image_return)
 
@@ -37,12 +40,15 @@ def dissection(image : numpy) :
   
   g_min = 255 - max_value
   
-  for i in range(len(image)):
-    image_return[i] = list(
-      map(
-        lambda item : subDissection(item, g_min), image[i]
-      )
+  image_return = list(
+    map(
+      lambda row: list(
+        map(
+          lambda pixel: subDissection(pixel, g_min), row
+        )
+      ), image_return
     )
+  )
   
   return numpy.array(image_return)
 
@@ -65,7 +71,7 @@ plt.hist(images.ravel(), 255)
 
 hist, bins = numpy.histogram(images.flatten(), 255, [0, 255])
 
-images_other = equalization(images, hist)
+# images_other = equalization(images, hist)
 
 plt.hist(images_other.ravel(), 255)
 
