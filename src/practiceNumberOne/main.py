@@ -62,7 +62,7 @@ def equalization(images: numpy.ndarray, hist: numpy.ndarray) :
 
   return cdf[images]
 
-images = imread("./src/practickNumberOne/lena.jpg")
+images = imread("./src/practiceNumberOne/lena.jpg")
 
 images_other = lineСontrastingImage(images, 255,  0)
 
@@ -72,7 +72,7 @@ hist, bins = numpy.histogram(images.flatten(), 255, [0, 255])
 
 # images_other = equalization(images, hist)
 
-imsave('./src/practickNumberOne/images-other.jpg', images_other)
+imsave('./src/practiceNumberOne/images-other.jpg', images_other)
 
 plt.hist(images.ravel(), 255, label="До обработки изображения")
 
