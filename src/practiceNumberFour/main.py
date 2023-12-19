@@ -23,10 +23,18 @@ filterHightThree = numpy.array([
     [1, -2, 1]
 ])
 
+filterStatistic = numpy.array([
+    [1, -2, 1],
+    [-2, 4, -2],
+    [1, -2, 1]
+])
+
 saveImageOne = cv2.filter2D(image, -1, filterHightOne)
 saveImageTwo = cv2.filter2D(image, -1, filterHightTwo)
 saveImageThree = cv2.filter2D(image, -1, filterHightThree)
+saveImageStatistic = cv2.filter2D(image, -1, filterStatistic)
 
 cv2.imwrite('./src/practiceNumberFour/lena-hight-filter-one.jpg', saveImageOne)
 cv2.imwrite('./src/practiceNumberFour/lena-hight-filter-two.jpg', saveImageTwo)
 cv2.imwrite('./src/practiceNumberFour/lena-hight-filter-three.jpg', saveImageThree)
+cv2.imwrite('./src/practiceNumberFour/lena-statistic-filter.jpg', saveImageStatistic)
